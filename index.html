@@ -17,11 +17,11 @@ button{width:100%;margin-top:10px;border:0;border-radius:10px;padding:15px;backg
 .hidden{display:none!important}
 #reveal{position:fixed;inset:0;background:radial-gradient(ellipse at center,#5b0808 0%,#260404 48%,#090202 100%);display:grid;place-items:center;text-align:center;padding:24px;z-index:5;overflow:hidden}
 #reveal:before{content:"";position:absolute;inset:-50%;background:repeating-linear-gradient(0deg,transparent 0 3px,#ff25251c 4px 5px);animation:scan 8s linear infinite}
-.reveal-content{position:relative;z-index:1;max-width:850px}
+.reveal-content{position:relative;z-index:1;max-width:850px;padding-top:70px}
 .warning{font:700 12px ui-monospace,monospace;letter-spacing:.3em;color:#ff4b4b;margin-bottom:22px;text-shadow:0 0 12px #ff000080;animation:blink 1s steps(2,end) infinite}
 .glitch{font-size:clamp(38px,9vw,92px);font-weight:950;letter-spacing:-.06em;line-height:.95;color:#ff2424;text-shadow:4px 0 #ff7777,-4px 0 #7a0000,0 0 28px #ff000099;animation:glitch .75s infinite}
-.reveal-sub{font:13px ui-monospace,monospace;color:#f0bcbc;line-height:1.8;margin:26px auto;max-width:570px}
-.reveal-sub strong{color:#fff}.reset{background:#4b0808;border:1px solid #ff4545;color:#fff;max-width:220px}.reset:hover{background:#a10e0e;color:#fff}
+.reveal-sub{font:13px ui-monospace,monospace;color:#f0bcbc;line-height:1.8;margin:52px auto 28px;max-width:650px}.threat{font:700 clamp(14px,2vw,20px) ui-monospace,monospace;color:#ff6b6b;line-height:1.9;letter-spacing:.08em;margin:34px auto 0;text-shadow:0 0 14px #ff000055}.debrief{font:13px ui-monospace,monospace;color:#f0bcbc;line-height:1.8;margin:18px auto 22px;max-width:600px}.debrief.hidden{display:none!important}
+.reveal-sub strong{color:#fff}.reset{background:#310707;border:1px solid #8d2929;color:#d7aaaa;max-width:150px;padding:9px 12px;font-size:11px;opacity:.72;margin-top:8px}.reset:hover{background:#5b0a0a;color:#fff;opacity:1}
 @keyframes glitch{0%,100%{transform:translate(0)}20%{transform:translate(-2px,1px)}40%{transform:translate(2px,-1px)}60%{transform:translate(-1px,-1px)}80%{transform:translate(1px,2px)}}
 @keyframes blink{50%{opacity:.25}}@keyframes scan{to{transform:translateY(30%)}}
 @media(max-width:480px){.card{padding:25px 22px}}
@@ -42,15 +42,17 @@ button{width:100%;margin-top:10px;border:0;border-radius:10px;padding:15px;backg
 </main>
 <section id="reveal" class="hidden" aria-live="polite">
 <div class="reveal-content">
-<div class="warning">⚠ SECURITY ALERT // SIMULATION</div>
+<div class="warning">⚠ SECURITY ALERT</div>
 <div class="glitch" data-text="SYSTEM COMPROMISED">SYSTEM COMPROMISED</div>
-<p class="reveal-sub">Your trust was the attack surface.<br><strong>This was a social engineering simulation.</strong><br>Never enter your real password into an unfamiliar link. Verify the domain, sender, and purpose first.</p>
+<div class="threat" id="panicText">FILES ENCRYPTED<br>DATA TRANSFER INITIATED<br>SESSION ACCESS COMPROMISED</div>
+<p class="reveal-sub" id="panicSub">Your account session has been flagged.<br>Unauthorized activity detected.</p>
+<div class="debrief hidden" id="debrief"><strong>This was a social engineering simulation.</strong><br>No files were accessed, encrypted, or transferred. The password field was cleared and nothing was stored or sent.<br><br>Never enter your real password into an unfamiliar link. Verify the domain, sender, and purpose first.</div>
 <button class="reset" id="again">RETURN TO DEMO</button>
 </div>
 </section>
 <script>
 const form=document.getElementById('demoForm');
 form.addEventListener('submit',e=>{e.preventDefault();const email=document.getElementById('email').value.trim();if(!/^[^\s@]+@thapar\.edu$/i.test(email)){alert('Access denied. Please use your official Thapar email ID ending in @thapar.edu.');document.getElementById('email').focus();return;}document.getElementById('password').value='';document.getElementById('email').value='';document.getElementById('register').classList.add('hidden');document.getElementById('reveal').classList.remove('hidden');});
-document.getElementById('again').addEventListener('click',()=>{document.getElementById('reveal').classList.add('hidden');document.getElementById('register').classList.remove('hidden');});
+let debriefTimer;form.addEventListener('submit',()=>{clearTimeout(debriefTimer);document.getElementById('debrief').classList.add('hidden');debriefTimer=setTimeout(()=>{document.getElementById('panicText').classList.add('hidden');document.getElementById('panicSub').classList.add('hidden');document.getElementById('debrief').classList.remove('hidden');},6500);});document.getElementById('again').addEventListener('click',()=>{clearTimeout(debriefTimer);document.getElementById('reveal').classList.add('hidden');document.getElementById('register').classList.remove('hidden');document.getElementById('panicText').classList.remove('hidden');document.getElementById('panicSub').classList.remove('hidden');document.getElementById('debrief').classList.add('hidden');});
 </script>
 </body></html>
